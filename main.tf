@@ -1,6 +1,6 @@
-#
-# VDB
-#
+//
+// VDB
+//
 
 // ENV
 variable "os_user_name" {}
