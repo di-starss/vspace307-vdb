@@ -120,7 +120,7 @@ variable "dns_ip" { default = ["172.21.17.17"] }
 
 variable "mgmt_user" {}
 variable "mgmt_public_key" {}
-variable "mgmt_private_key_file" {}
+variable "mgmt_private_key" {}
 
 // db
 variable "vdb_data_dev" { default = "vdb" }
@@ -338,7 +338,7 @@ module "vdb_master" {
   net = var.net_ams_vdb_master
   security_group = openstack_compute_secgroup_v2.vdb.id
 
-  mgmt_private_key_file = var.mgmt_private_key_file
+  mgmt_private_key = var.mgmt_private_key
   mgmt_user = var.mgmt_user
   ansible_playbook = var.vdb_ansible_playbook_master
 
@@ -375,7 +375,7 @@ module "vdb_slave0" {
   net = var.net_ams_vdb_slave
   security_group = openstack_compute_secgroup_v2.vdb.id
 
-  mgmt_private_key_file = var.mgmt_private_key_file
+  mgmt_private_key = var.mgmt_private_key
   mgmt_user = var.mgmt_user
   ansible_playbook = var.vdb_ansible_playbook_slave
 
@@ -412,7 +412,7 @@ module "vdb_slave1" {
   net = var.net_ams_vdb_slave
   security_group = openstack_compute_secgroup_v2.vdb.id
 
-  mgmt_private_key_file = var.mgmt_private_key_file
+  mgmt_private_key = var.mgmt_private_key
   mgmt_user = var.mgmt_user
   ansible_playbook = var.vdb_ansible_playbook_slave
 
@@ -449,7 +449,7 @@ module "vdb_delay0" {
   net = var.net_ldn_vdb_delay
   security_group = openstack_compute_secgroup_v2.vdb.id
 
-  mgmt_private_key_file = var.mgmt_private_key_file
+  mgmt_private_key = var.mgmt_private_key
   mgmt_user = var.mgmt_user
   ansible_playbook = var.vdb_ansible_playbook_delay
 
@@ -487,7 +487,7 @@ module "vdb_delay1" {
   net = var.net_ldn_vdb_delay
   security_group = openstack_compute_secgroup_v2.vdb.id
 
-  mgmt_private_key_file = var.mgmt_private_key_file
+  mgmt_private_key = var.mgmt_private_key
   mgmt_user = var.mgmt_user
   ansible_playbook = var.vdb_ansible_playbook_delay
 
@@ -525,7 +525,7 @@ module "vdb_delay2" {
   net = var.net_ldn_vdb_delay
   security_group = openstack_compute_secgroup_v2.vdb.id
 
-  mgmt_private_key_file = var.mgmt_private_key_file
+  mgmt_private_key = var.mgmt_private_key
   mgmt_user = var.mgmt_user
   ansible_playbook = var.vdb_ansible_playbook_delay
 
@@ -565,7 +565,7 @@ module "vdb_sysbench" {
   net = var.net_ams_vdb_master
   security_group = openstack_compute_secgroup_v2.vdb.id
 
-  mgmt_private_key_file = var.mgmt_private_key_file
+  mgmt_private_key = var.mgmt_private_key
   mgmt_user = var.mgmt_user
   ansible_playbook = var.vdb_ansible_playbook_sysbench
 }
