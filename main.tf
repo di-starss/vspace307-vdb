@@ -1,26 +1,77 @@
+/**
+
+    $ VDB, v.2.1 2021/10/11 08:14 Exp @di $
+
+    CLI___
+          openstack project create --description 'vDB' vdb --domain default
+          openstack user create --project vdb --password {password} vdb
+          openstack role add --project vdb --user {user} --user-domain default member
+          openstack role add --project vdb --user {user} --user-domain default admin
+
+    ENV___
+          export TF_VAR_os_auth_url={os_auth_url}
+          export TF_VAR_os_tenant_name={os_tenant_name}
+          export TF_VAR_os_user_name={os_user_name}
+          export TF_VAR_os_password={os_password}
+          export TF_VAR_os_region={os_region}
+
+          export TF_VAR_nbx_server_url={url}
+          export TF_VAR_nbx_api_token={api_token}
+          export TF_VAR_nbx_allow_insecure_https=false
+
+          export TF_VAR_dns_server_url={url}
+          export TF_VAR_dns_api_key={api_token}
+
+    CFG___
+          variable "os_auth_url" {}
+          variable "os_tenant_name" {}
+          variable "os_user_name" {}
+          variable "os_password" {}
+          variable "os_region" {}
+
+          variable "nbx_server_url" {}
+          variable "nbx_api_token" {}
+          variable "nbx_allow_insecure_https" {}
+
+          variable "dns_server_url" {}
+          variable "dns_api_key" {}
+
+          variable "consul_host" { default = "consul.openlabs.vspace307.io" }
+          variable "consul_port" { default = 8500 }
+          variable "consul_schema" { default = "http" }
+
+          locals {
+            consul_url = "${var.consul_schema}://${var.consul_host}:${var.consul_port}"
+          }
+
+          provider "openstack" {
+            auth_url    = var.os_auth_url
+            tenant_name = var.os_tenant_name
+            user_name   = var.os_user_name
+            password    = var.os_password
+            region      = var.os_region
+          }
+
+          provider "netbox" {
+            server_url           = var.nbx_server_url
+            api_token            = var.nbx_api_token
+            allow_insecure_https = var.nbx_allow_insecure_https
+          }
+
+          provider "powerdns" {
+            server_url  = var.dns_server_url
+            api_key     = var.dns_api_key
+          }
+
+          provider "consul" {
+            address    = local.consul_url
+            datacenter = var.consul_dc
+          }
+**/
+
 //
-// VDB
+// PROVIDER
 //
-
-// ENV
-variable "os_user_name" {}
-variable "os_tenant_name" {}
-variable "os_password" {}
-variable "os_auth_url" {}
-variable "os_region" {}
-
-variable "nbx_server_url" {}
-variable "nbx_api_token" {}
-variable "nbx_allow_insecure_https" {}
-
-variable "dns_server_url" {}
-variable "dns_api_key" {}
-
-locals {
-  consul_url = "${var.consul_schema}://${var.consul_host}:${var.consul_port}"
-}
-
-// Providers
 terraform {
   required_version = ">= 0.14.0"
   required_providers {
@@ -43,39 +94,12 @@ terraform {
   }
 }
 
-provider "openstack" {
-  user_name   = var.os_user_name
-  tenant_name = var.os_tenant_name
-  password    = var.os_password
-  auth_url    = var.os_auth_url
-  region      = var.os_region
-}
-
-provider "netbox" {
-  server_url           = var.nbx_server_url
-  api_token            = var.nbx_api_token
-  allow_insecure_https = var.nbx_allow_insecure_https
-}
-
-provider "powerdns" {
-  server_url  = var.dns_server_url
-  api_key     = var.dns_api_key
-}
-
-provider "consul" {
-  address    = local.consul_url
-  datacenter = var.consul_dc
-}
-
-// Vars
+//
+// CORE
+//
 variable "env" {}
 variable "service" {}
 variable "project" {}
-
-variable "consul_host" {}
-variable "consul_port" {}
-variable "consul_schema" {}
-variable "consul_dc" {}
 
 variable "site_ams" { default = "AMS1" }
 variable "site_ldn" { default = "LDN1" }
@@ -122,7 +146,15 @@ variable "mgmt_user" {}
 variable "mgmt_public_key" {}
 variable "mgmt_private_key" {}
 
-// db
+// consul
+variable "consul_host" {}
+variable "consul_port" {}
+variable "consul_schema" {}
+variable "consul_dc" {}
+
+//
+// VDB
+// ---------------------------------------------------------------------------------------------------------------------
 variable "vdb_data_dev" { default = "vdb" }
 variable "vdb_data_dir" { default = "/data" }
 
