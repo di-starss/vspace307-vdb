@@ -152,6 +152,12 @@ variable "consul_port" {}
 variable "consul_schema" {}
 variable "consul_dc" {}
 
+// role
+variable "role_master" { default = "master" }
+variable "role_slave" { default = "slave" }
+variable "role_delay" { default = "delay" }
+variable "role_sysbench" { default = "sysbench" }
+
 //
 // VDB
 // ---------------------------------------------------------------------------------------------------------------------
@@ -349,6 +355,8 @@ module "vdb_master" {
   project = var.project
   service = var.service
 
+  role = var.role_master
+
   instance_name = module.nbx_vm_vdb_master.vm_hostname
   site = module.nbx_vm_vdb_master.site
 
@@ -385,6 +393,8 @@ module "vdb_slave0" {
   env = var.env
   project = var.project
   service = var.service
+
+  role = var.role_slave
 
   instance_name = module.nbx_vm_vdb_slave0.vm_hostname
   site = module.nbx_vm_vdb_slave0.site
@@ -423,6 +433,8 @@ module "vdb_slave1" {
   project = var.project
   service = var.service
 
+  role = var.role_slave
+
   instance_name = module.nbx_vm_vdb_slave1.vm_hostname
   site = module.nbx_vm_vdb_slave1.site
 
@@ -459,6 +471,8 @@ module "vdb_delay0" {
   env = var.env
   project = var.project
   service = var.service
+
+  role = var.role_delay
 
   instance_name = module.nbx_vm_vdb_delay0.vm_hostname
   site = var.site_ldn
@@ -498,6 +512,8 @@ module "vdb_delay1" {
   project = var.project
   service = var.service
 
+  role = var.role_delay
+
   instance_name = module.nbx_vm_vdb_delay1.vm_hostname
   site = var.site_ldn
 
@@ -535,6 +551,8 @@ module "vdb_delay2" {
   env = var.env
   project = var.project
   service = var.service
+
+  role = var.role_delay
 
   instance_name = module.nbx_vm_vdb_delay2.vm_hostname
   site = var.site_ldn
@@ -576,6 +594,8 @@ module "vdb_sysbench" {
   env = var.env
   project = var.project
   service = var.service
+
+  role = var.role_sysbench
 
   instance_name = module.nbx_vm_vdb_sysbench.vm_hostname
   site = module.nbx_vm_vdb_sysbench.site
