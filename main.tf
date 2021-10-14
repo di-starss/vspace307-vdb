@@ -268,6 +268,12 @@ resource "openstack_compute_secgroup_v2" "vdb" {
   name        = local.security_group
   description = "open input for VDB"
   rule {
+    from_port   = -1
+    to_port     = -1
+    ip_protocol = "icmp"
+    cidr        = "0.0.0.0/0"
+  }
+  rule {
     from_port   = 22
     to_port     = 22
     ip_protocol = "tcp"
