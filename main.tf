@@ -156,7 +156,6 @@ variable "consul_dc" {}
 variable "role_master" { default = "master" }
 variable "role_slave" { default = "slave" }
 variable "role_delay" { default = "delay" }
-variable "role_sysbench" { default = "sysbench" }
 
 //
 // VDB
@@ -594,8 +593,6 @@ module "vdb_sysbench" {
   env = var.env
   project = var.project
   service = var.service
-
-  role = var.role_sysbench
 
   instance_name = module.nbx_vm_vdb_sysbench.vm_hostname
   site = module.nbx_vm_vdb_sysbench.site
